@@ -87,7 +87,7 @@ export async function request<TMock>(
     method: options.method ?? "GET",
     headers: { "Content-Type": "application/json" },
     body: options.body ? JSON.stringify(options.body) : null,
-    signal: options.signal,
+    signal: options.signal ?? null,
   });
 
   if (!response.ok) {
