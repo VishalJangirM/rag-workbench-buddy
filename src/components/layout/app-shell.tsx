@@ -218,7 +218,7 @@ export function AppShell({
   children,
 }: {
   title: string;
-  breadcrumb?: string[];
+  breadcrumb?: string[] | undefined;
   children: ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
