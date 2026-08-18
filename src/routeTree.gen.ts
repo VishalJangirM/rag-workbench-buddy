@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as EvaluationsRouteImport } from './routes/evaluations'
+import { Route as PlaygroundRouteImport } from './routes/playground'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsRoute = DocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvaluationsRoute = EvaluationsRouteImport.update({
+  id: '/evaluations',
+  path: '/evaluations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundRoute = PlaygroundRouteImport.update({
+  id: '/playground',
+  path: '/playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/documents': typeof DocumentsRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/playground': typeof PlaygroundRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/documents': typeof DocumentsRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/playground': typeof PlaygroundRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/documents': typeof DocumentsRoute
+  '/evaluations': typeof EvaluationsRoute
+  '/playground': typeof PlaygroundRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/documents' | '/evaluations' | '/playground'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/documents' | '/evaluations' | '/playground'
+  id: '__root__' | '/' | '/documents' | '/evaluations' | '/playground'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DocumentsRoute: typeof DocumentsRoute
+  EvaluationsRoute: typeof EvaluationsRoute
+  PlaygroundRoute: typeof PlaygroundRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +78,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evaluations': {
+      id: '/evaluations'
+      path: '/evaluations'
+      fullPath: '/evaluations'
+      preLoaderRoute: typeof EvaluationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playground': {
+      id: '/playground'
+      path: '/playground'
+      fullPath: '/playground'
+      preLoaderRoute: typeof PlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DocumentsRoute: DocumentsRoute,
+  EvaluationsRoute: EvaluationsRoute,
+  PlaygroundRoute: PlaygroundRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
