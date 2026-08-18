@@ -164,7 +164,7 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
   );
 }
 
-function TopBar({ title, breadcrumb }: { title: string; breadcrumb?: string[] }) {
+function TopBar({ title, breadcrumb }: { title: string; breadcrumb?: string[] | undefined }) {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b border-border bg-background/95 px-6 backdrop-blur">
       <div className="flex min-w-0 items-center gap-2 text-sm">
