@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
+import { Route as ExperimentsRouteImport } from './routes/experiments'
+import { Route as FailuresRouteImport } from './routes/failures'
 import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as EvaluationsRunIdRouteImport } from './routes/evaluations.$runId'
+import { Route as ExperimentsCompareRouteImport } from './routes/experiments.compare'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,43 +33,102 @@ const EvaluationsRoute = EvaluationsRouteImport.update({
   path: '/evaluations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExperimentsRoute = ExperimentsRouteImport.update({
+  id: '/experiments',
+  path: '/experiments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FailuresRoute = FailuresRouteImport.update({
+  id: '/failures',
+  path: '/failures',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
   path: '/playground',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvaluationsRunIdRoute = EvaluationsRunIdRouteImport.update({
+  id: '/$runId',
+  path: '/$runId',
+  getParentRoute: () => EvaluationsRoute,
+} as any)
+const ExperimentsCompareRoute = ExperimentsCompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => ExperimentsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/documents': typeof DocumentsRoute
-  '/evaluations': typeof EvaluationsRoute
+  '/evaluations': typeof EvaluationsRouteWithChildren
+  '/experiments': typeof ExperimentsRouteWithChildren
+  '/failures': typeof FailuresRoute
   '/playground': typeof PlaygroundRoute
+  '/evaluations/$runId': typeof EvaluationsRunIdRoute
+  '/experiments/compare': typeof ExperimentsCompareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/documents': typeof DocumentsRoute
-  '/evaluations': typeof EvaluationsRoute
+  '/evaluations': typeof EvaluationsRouteWithChildren
+  '/experiments': typeof ExperimentsRouteWithChildren
+  '/failures': typeof FailuresRoute
   '/playground': typeof PlaygroundRoute
+  '/evaluations/$runId': typeof EvaluationsRunIdRoute
+  '/experiments/compare': typeof ExperimentsCompareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/documents': typeof DocumentsRoute
-  '/evaluations': typeof EvaluationsRoute
+  '/evaluations': typeof EvaluationsRouteWithChildren
+  '/experiments': typeof ExperimentsRouteWithChildren
+  '/failures': typeof FailuresRoute
   '/playground': typeof PlaygroundRoute
+  '/evaluations/$runId': typeof EvaluationsRunIdRoute
+  '/experiments/compare': typeof ExperimentsCompareRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/documents' | '/evaluations' | '/playground'
+  fullPaths:
+    | '/'
+    | '/documents'
+    | '/evaluations'
+    | '/experiments'
+    | '/failures'
+    | '/playground'
+    | '/evaluations/$runId'
+    | '/experiments/compare'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/documents' | '/evaluations' | '/playground'
-  id: '__root__' | '/' | '/documents' | '/evaluations' | '/playground'
+  to:
+    | '/'
+    | '/documents'
+    | '/evaluations'
+    | '/experiments'
+    | '/failures'
+    | '/playground'
+    | '/evaluations/$runId'
+    | '/experiments/compare'
+  id:
+    | '__root__'
+    | '/'
+    | '/documents'
+    | '/evaluations'
+    | '/experiments'
+    | '/failures'
+    | '/playground'
+    | '/evaluations/$runId'
+    | '/experiments/compare'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DocumentsRoute: typeof DocumentsRoute
-  EvaluationsRoute: typeof EvaluationsRoute
+  EvaluationsRoute: typeof EvaluationsRouteWithChildren
+  ExperimentsRoute: typeof ExperimentsRouteWithChildren
+  FailuresRoute: typeof FailuresRoute
   PlaygroundRoute: typeof PlaygroundRoute
 }
 
@@ -92,6 +155,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvaluationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/experiments': {
+      id: '/experiments'
+      path: '/experiments'
+      fullPath: '/experiments'
+      preLoaderRoute: typeof ExperimentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/failures': {
+      id: '/failures'
+      path: '/failures'
+      fullPath: '/failures'
+      preLoaderRoute: typeof FailuresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playground': {
       id: '/playground'
       path: '/playground'
@@ -99,13 +176,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaygroundRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evaluations/$runId': {
+      id: '/evaluations/$runId'
+      path: '/$runId'
+      fullPath: '/evaluations/$runId'
+      preLoaderRoute: typeof EvaluationsRunIdRouteImport
+      parentRoute: typeof EvaluationsRoute
+    }
+    '/experiments/compare': {
+      id: '/experiments/compare'
+      path: '/compare'
+      fullPath: '/experiments/compare'
+      preLoaderRoute: typeof ExperimentsCompareRouteImport
+      parentRoute: typeof ExperimentsRoute
+    }
   }
 }
+
+interface EvaluationsRouteChildren {
+  EvaluationsRunIdRoute: typeof EvaluationsRunIdRoute
+}
+
+const EvaluationsRouteChildren: EvaluationsRouteChildren = {
+  EvaluationsRunIdRoute: EvaluationsRunIdRoute,
+}
+
+const EvaluationsRouteWithChildren = EvaluationsRoute._addFileChildren(
+  EvaluationsRouteChildren,
+)
+
+interface ExperimentsRouteChildren {
+  ExperimentsCompareRoute: typeof ExperimentsCompareRoute
+}
+
+const ExperimentsRouteChildren: ExperimentsRouteChildren = {
+  ExperimentsCompareRoute: ExperimentsCompareRoute,
+}
+
+const ExperimentsRouteWithChildren = ExperimentsRoute._addFileChildren(
+  ExperimentsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocumentsRoute: DocumentsRoute,
-  EvaluationsRoute: EvaluationsRoute,
+  EvaluationsRoute: EvaluationsRouteWithChildren,
+  ExperimentsRoute: ExperimentsRouteWithChildren,
+  FailuresRoute: FailuresRoute,
   PlaygroundRoute: PlaygroundRoute,
 }
 export const routeTree = rootRouteImport
