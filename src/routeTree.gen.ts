@@ -10,17 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DatasetsRouteImport } from './routes/datasets'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as EvaluationsRouteImport } from './routes/evaluations'
 import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as FailuresRouteImport } from './routes/failures'
+import { Route as ModelsRouteImport } from './routes/models'
 import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as EvaluationsRunIdRouteImport } from './routes/evaluations.$runId'
 import { Route as ExperimentsCompareRouteImport } from './routes/experiments.compare'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatasetsRoute = DatasetsRouteImport.update({
+  id: '/datasets',
+  path: '/datasets',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentsRoute = DocumentsRouteImport.update({
@@ -43,9 +51,19 @@ const FailuresRoute = FailuresRouteImport.update({
   path: '/failures',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModelsRoute = ModelsRouteImport.update({
+  id: '/models',
+  path: '/models',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
   path: '/playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvaluationsRunIdRoute = EvaluationsRunIdRouteImport.update({
@@ -61,32 +79,41 @@ const ExperimentsCompareRoute = ExperimentsCompareRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/datasets': typeof DatasetsRoute
   '/documents': typeof DocumentsRoute
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/experiments': typeof ExperimentsRouteWithChildren
   '/failures': typeof FailuresRoute
+  '/models': typeof ModelsRoute
   '/playground': typeof PlaygroundRoute
+  '/settings': typeof SettingsRoute
   '/evaluations/$runId': typeof EvaluationsRunIdRoute
   '/experiments/compare': typeof ExperimentsCompareRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/datasets': typeof DatasetsRoute
   '/documents': typeof DocumentsRoute
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/experiments': typeof ExperimentsRouteWithChildren
   '/failures': typeof FailuresRoute
+  '/models': typeof ModelsRoute
   '/playground': typeof PlaygroundRoute
+  '/settings': typeof SettingsRoute
   '/evaluations/$runId': typeof EvaluationsRunIdRoute
   '/experiments/compare': typeof ExperimentsCompareRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/datasets': typeof DatasetsRoute
   '/documents': typeof DocumentsRoute
   '/evaluations': typeof EvaluationsRouteWithChildren
   '/experiments': typeof ExperimentsRouteWithChildren
   '/failures': typeof FailuresRoute
+  '/models': typeof ModelsRoute
   '/playground': typeof PlaygroundRoute
+  '/settings': typeof SettingsRoute
   '/evaluations/$runId': typeof EvaluationsRunIdRoute
   '/experiments/compare': typeof ExperimentsCompareRoute
 }
@@ -94,42 +121,54 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/datasets'
     | '/documents'
     | '/evaluations'
     | '/experiments'
     | '/failures'
+    | '/models'
     | '/playground'
+    | '/settings'
     | '/evaluations/$runId'
     | '/experiments/compare'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/datasets'
     | '/documents'
     | '/evaluations'
     | '/experiments'
     | '/failures'
+    | '/models'
     | '/playground'
+    | '/settings'
     | '/evaluations/$runId'
     | '/experiments/compare'
   id:
     | '__root__'
     | '/'
+    | '/datasets'
     | '/documents'
     | '/evaluations'
     | '/experiments'
     | '/failures'
+    | '/models'
     | '/playground'
+    | '/settings'
     | '/evaluations/$runId'
     | '/experiments/compare'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DatasetsRoute: typeof DatasetsRoute
   DocumentsRoute: typeof DocumentsRoute
   EvaluationsRoute: typeof EvaluationsRouteWithChildren
   ExperimentsRoute: typeof ExperimentsRouteWithChildren
   FailuresRoute: typeof FailuresRoute
+  ModelsRoute: typeof ModelsRoute
   PlaygroundRoute: typeof PlaygroundRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -139,6 +178,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/datasets': {
+      id: '/datasets'
+      path: '/datasets'
+      fullPath: '/datasets'
+      preLoaderRoute: typeof DatasetsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents': {
@@ -169,11 +215,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FailuresRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/models': {
+      id: '/models'
+      path: '/models'
+      fullPath: '/models'
+      preLoaderRoute: typeof ModelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/playground': {
       id: '/playground'
       path: '/playground'
       fullPath: '/playground'
       preLoaderRoute: typeof PlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evaluations/$runId': {
@@ -219,11 +279,14 @@ const ExperimentsRouteWithChildren = ExperimentsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DatasetsRoute: DatasetsRoute,
   DocumentsRoute: DocumentsRoute,
   EvaluationsRoute: EvaluationsRouteWithChildren,
   ExperimentsRoute: ExperimentsRouteWithChildren,
   FailuresRoute: FailuresRoute,
+  ModelsRoute: ModelsRoute,
   PlaygroundRoute: PlaygroundRoute,
+  SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
