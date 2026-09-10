@@ -54,7 +54,7 @@ function Section({
 }: {
   title: string;
   description: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <Card>
