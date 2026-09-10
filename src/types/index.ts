@@ -247,3 +247,21 @@ export interface DashboardSummary {
   activeConfiguration: RAGConfiguration;
   activeDataset: { id: string; name: string; questions: number };
 }
+
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  username: string;
+  email: string;
+  role: string;
+  avatarUrl: string | null;
+  /** ISO date (yyyy-mm-dd). */
+  memberSince: string;
+}
+
+export interface UserStats {
+  evaluationsRun: number;
+  experiments: number;
+  documents: number;
+  queriesEvaluated: number;
+}
